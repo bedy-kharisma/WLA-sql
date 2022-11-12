@@ -44,7 +44,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import mysql.connector as connection
 #import pandas as pd
 #try:
-mydb = connection.connect(host="localhost", database = 'workload',user="root", passwd="miupiu19",use_pure=True)
+mydb = connection.connect(host="localhost:3306", database = 'workload',user="root", passwd="miupiu19",use_pure=True)
 
 #result_dataFrame = pd.read_sql(query,mydb)
 #mydb.close() #close the connection
@@ -171,7 +171,8 @@ def page2():
             )
         st.markdown("Langkah")    
         with st.expander("1. Upload file Excel Data WLA.xlsx",expanded=True):
-            uploaded_file= "Select * from data_model;" #"Select * from data_model;" #run_query("SELECT * from data_model;") #pd.read_sql_table("data_model", engine)
+            query= "Select * from data_model;" #"Select * from data_model;" #run_query("SELECT * from data_model;") #pd.read_sql_table("data_model", engine)
+            uploaded_file=pd.read_sql(query,mydb)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded_file.columns, 
@@ -443,7 +444,8 @@ def page2():
             )
         st.markdown("Langkah")    
         with st.expander("1. Upload file Excel Data WLA Telkom.xlsx",expanded=True):
-            uploaded_file= "Select * from data_model;" #run_query("SELECT * from data_model;") #pd.read_sql_table("data_model", engine)
+            query= "Select * from data_model;" #run_query("SELECT * from data_model;") #pd.read_sql_table("data_model", engine)
+            uploaded_file=pd.read_sql(query,mydb)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded_file.columns, ['EMPLOYEE_ID', 'AGE', 'GENDER','MARITAL_STATUS','EDUCATION_GRADE','RECRUITMENT_STATUS', 'EMPLOYMENT_STATUS', 'YEARS_AT_COMPANY','DEPARTMENT','JOB_LEVEL', 'JOB_NATURE', 'TASK_TYPE','THP_CURRENT', 'thp_increase', 'LAST_MUTATION','LAST_PROMOTION','training_duration_2022', 'leadership_score','functional_score', 'budaya_score'], key=6) 
@@ -681,8 +683,8 @@ def page2():
             )
         st.markdown("Langkah")    
         with st.expander("1. Upload file Excel Data WFP.xlsx",expanded=True):
-            uploaded="Select * from data_wfp;" #run_query("SELECT * from data_wfp;")#pd.read_sql_table("data_wfp", engine)
-            
+            query="Select * from data_wfp;" #run_query("SELECT * from data_wfp;")#pd.read_sql_table("data_wfp", engine)
+            uploaded=pd.read_sql(query,mydb)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded.columns, ["departemen","tahun", "target_revenue","pelanggan", "potensi_revenue","jumlah_produk","karyawan_organik", "pencapaian_revenue","functional_1","functional_2","functional_3","functional_4","functional_5","soft_competency_1","soft_competency_2","soft_competency_3","soft_competency_4","soft_competency_5","jumlah_okr","pencapaian_okr","Productivity"], key=15) 
@@ -897,7 +899,8 @@ def page6():
         upl_modelWLAclass = st.file_uploader("Upload file pipeline-classification.pkl",key=28)
         tab4, tab5 = st.tabs(["Batch", "Individual"])
         with tab4:
-            uploaded_file="Select * from data_model;"#run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
+            query="Select * from data_model;"#run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
+            uploaded_file=pd.read_sql(query,mydb)
             st.warning("WARNING make sure there is no nan value on features value. All empty rows will be filled with mean value")
             if uploaded_file is not None: 
                 # read data
@@ -1261,8 +1264,8 @@ def page6():
         upl_modelWFPreg = st.file_uploader("Upload file pipelineWFP-regression.pkl",key=69)
         tab8, tab9 = st.tabs(["Batch", "Individual"])
         with tab8:
-            uploaded="Select * from data_wfp;"#run_query("SELECT * from data_wfp;")#pd.read_sql_table("data_wfp", engine)
-            
+            query="Select * from data_wfp;"#run_query("SELECT * from data_wfp;")#pd.read_sql_table("data_wfp", engine)
+            uploaded=pd.read_sql(query,mydb)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded.columns, ["departemen","tahun", "target_revenue","pelanggan", "potensi_revenue","jumlah_produk","karyawan_organik", "pencapaian_revenue","functional_1","functional_2","functional_3","functional_4","functional_5","soft_competency_1","soft_competency_2","soft_competency_3","soft_competency_4","soft_competency_5","jumlah_okr","pencapaian_okr","Productivity"], key=70) 
@@ -1447,9 +1450,10 @@ def page6():
 def page10():
     tab1,tab2 = st.tabs(["Average Competencies each Departement","Efective Hours for Each Position"])
     with tab1:
-        uploaded_cb="Select * from competencies_behavior;"#run_query("SELECT * from competencies_behavior;")#pd.read_sql_table("competencies_behavior", engine)
-        uploaded_dm="Select * from data_model;"#run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
-        
+        query_cb="Select * from competencies_behavior;"#run_query("SELECT * from competencies_behavior;")#pd.read_sql_table("competencies_behavior", engine)
+        query_dm="Select * from data_model;"#run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
+        uploaded_cb=pd.read_sql(query_cb,mydb)
+        uploaded_dm=pd.read_sql(query_dm,mydb)
         if uploaded_cb is not None and uploaded_dm is not None:
             df_employee = uploaded_dm
             df_competence= uploaded_cb
