@@ -50,9 +50,9 @@ import mysql.connector
 #conn = init_connection()
 
 import mysql.connector
-cnx = mysql.connector.connect(user='root', password='miupiu19',
+cnx = mysql.connector.connect(user='root', password=DB_PASS,
                               host='localhost',port="3306",
-                              database='workload')
+                              database=DB_NAME)
 #cnx.close()
 
 
