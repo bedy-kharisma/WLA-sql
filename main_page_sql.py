@@ -43,13 +43,18 @@ import mysql.connector
 
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
-@st.experimental_singleton
-def init_connection():
-    return mysql.connector.connect(**st.secrets["mysql"])
+#@st.experimental_singleton
+#def init_connection():
+#    return mysql.connector.connect(**st.secrets["mysql"])
 
-conn = init_connection()
+#conn = init_connection()
 
-    
+import mysql.connector
+cnx = mysql.connector.connect(user='root', password='miupiu19',
+                              host='localhost',port="3306"
+                              database='workload')
+#cnx.close()
+
 
 warnings.filterwarnings('ignore')
 st.set_option('deprecation.showPyplotGlobalUse', False)
