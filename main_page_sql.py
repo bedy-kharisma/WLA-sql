@@ -35,25 +35,20 @@ from sklearn import metrics
 from sklearn.metrics import accuracy_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 #sql localhost connection
-import sqlalchemy
-import pymysql
-engine=sqlalchemy.create_engine('mysql+pymysql://root:miupiu19@localhost:3306/workload')
+#import sqlalchemy
+#import pymysql
+#engine=sqlalchemy.create_engine('mysql+pymysql://root:miupiu19@localhost:3306/workload')
 
+# streamlit_app.py
 import mysql.connector
 
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
-#@st.experimental_singleton
-#def init_connection():
-#    return mysql.connector.connect(**st.secrets["mysql"])
+@st.experimental_singleton
+def init_connection():
+    return mysql.connector.connect(**st.secrets["mysql"])
 
-#conn = init_connection()
-
-import mysql.connector
-cnx = mysql.connector.connect(user='root', password=st.secrets["DB_PASS"],
-                              host='localhost',port="3306",
-                              database="workload")
-#cnx.close()
+conn = init_connection()
 
 
 warnings.filterwarnings('ignore')
