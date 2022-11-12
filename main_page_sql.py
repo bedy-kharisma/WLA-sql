@@ -39,6 +39,18 @@ import sqlalchemy
 import pymysql
 engine=sqlalchemy.create_engine('mysql+pymysql://root:miupiu19@localhost:3306/workload')
 
+import mysql.connector
+
+# Initialize connection.
+# Uses st.experimental_singleton to only run once.
+@st.experimental_singleton
+def init_connection():
+    return mysql.connector.connect(**st.secrets["mysql"])
+
+conn = init_connection()
+
+    
+
 warnings.filterwarnings('ignore')
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
