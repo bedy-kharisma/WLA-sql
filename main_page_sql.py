@@ -47,9 +47,13 @@ import mysql.connector
 #@st.experimental_singleton
 def init_connection():
     return mysql.connector.connect(**st.secrets.mysql)
-
 conn = init_connection()
 
+@st.experimental_memo(ttl=600)
+def run_query(query):
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchall()
 
 warnings.filterwarnings('ignore')
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -157,7 +161,7 @@ def page2():
             )
         st.markdown("Langkah")    
         with st.expander("1. Upload file Excel Data WLA.xlsx",expanded=True):
-            uploaded_file=pd.read_sql_table("data_model", engine)
+            uploaded_file=run_query("SELECT * from data_model;") #pd.read_sql_table("data_model", engine)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded_file.columns, 
@@ -429,7 +433,7 @@ def page2():
             )
         st.markdown("Langkah")    
         with st.expander("1. Upload file Excel Data WLA Telkom.xlsx",expanded=True):
-            uploaded_file=pd.read_sql_table("data_model", engine)
+            uploaded_file= run_query("SELECT * from data_model;") #pd.read_sql_table("data_model", engine)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded_file.columns, ['EMPLOYEE_ID', 'AGE', 'GENDER','MARITAL_STATUS','EDUCATION_GRADE','RECRUITMENT_STATUS', 'EMPLOYMENT_STATUS', 'YEARS_AT_COMPANY','DEPARTMENT','JOB_LEVEL', 'JOB_NATURE', 'TASK_TYPE','THP_CURRENT', 'thp_increase', 'LAST_MUTATION','LAST_PROMOTION','training_duration_2022', 'leadership_score','functional_score', 'budaya_score'], key=6) 
@@ -667,7 +671,7 @@ def page2():
             )
         st.markdown("Langkah")    
         with st.expander("1. Upload file Excel Data WFP.xlsx",expanded=True):
-            uploaded=pd.read_sql_table("data_wfp", engine)
+            uploaded=run_query("SELECT * from data_wfp;")#pd.read_sql_table("data_wfp", engine)
             
             col1,col2=st.columns(2)
             with col1:
@@ -883,7 +887,7 @@ def page6():
         upl_modelWLAclass = st.file_uploader("Upload file pipeline-classification.pkl",key=28)
         tab4, tab5 = st.tabs(["Batch", "Individual"])
         with tab4:
-            uploaded_file=pd.read_sql_table("data_model", engine)
+            uploaded_file=run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
             st.warning("WARNING make sure there is no nan value on features value. All empty rows will be filled with mean value")
             if uploaded_file is not None: 
                 # read data
@@ -1066,7 +1070,7 @@ def page6():
       
         tab6, tab7 = st.tabs(["Batch", "Individual"])
         with tab6:
-            uploaded_file=pd.read_sql_table("data_model", engine)
+            uploaded_file=run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
             col1,col2=st.columns(2)
             with col1:
                 feature_select=st.multiselect("pilih features", uploaded_file.columns, 
@@ -1247,7 +1251,7 @@ def page6():
         upl_modelWFPreg = st.file_uploader("Upload file pipelineWFP-regression.pkl",key=69)
         tab8, tab9 = st.tabs(["Batch", "Individual"])
         with tab8:
-            uploaded=pd.read_sql_table("data_wfp", engine)
+            uploaded=run_query("SELECT * from data_wfp;")#pd.read_sql_table("data_wfp", engine)
             
             col1,col2=st.columns(2)
             with col1:
@@ -1433,8 +1437,8 @@ def page6():
 def page10():
     tab1,tab2 = st.tabs(["Average Competencies each Departement","Efective Hours for Each Position"])
     with tab1:
-        uploaded_cb=pd.read_sql_table("competencies_behavior", engine)
-        uploaded_dm=pd.read_sql_table("data_model", engine)
+        uploaded_cb=run_query("SELECT * from competencies_behavior;")#pd.read_sql_table("competencies_behavior", engine)
+        uploaded_dm=run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
         
         if uploaded_cb is not None and uploaded_dm is not None:
             df_employee = uploaded_dm
@@ -1495,7 +1499,7 @@ def page10():
             
             
     with tab2:
-        uploaded_file=pd.read_sql_table("data_model", engine)
+        uploaded_file=run_query("SELECT * from data_model;")#pd.read_sql_table("data_model", engine)
         diarium= uploaded_file
         if diarium is not None:
             #read data
