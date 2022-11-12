@@ -51,7 +51,7 @@ import mysql.connector
 
 import mysql.connector
 cnx = mysql.connector.connect(user='root', password='miupiu19',
-                              host='localhost',port="3306"
+                              host='localhost',port="3306",
                               database='workload')
 #cnx.close()
 
