@@ -10,6 +10,7 @@ pymysql==1.0.2
 mysql-connector-python==8.0.31
 XlsxWriter==3.0.3
 streamlit==1.11.1
+altair<5
 shap==0.41.0
 ckwrap==0.1.10
 seaborn==0.12.1
